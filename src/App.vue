@@ -12,28 +12,42 @@ function addTask() {
     userInput.value = "";
 }
 
+function handleDeletion(taskTitle: string) {
+    tasksArray.value = tasksArray.value.filter(task => task !== taskTitle);
+}
+
 </script>
 
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-10 text-md-start mt-md-5">
+            <div class="col text-md-center mt-md-5 mb-3">
                 <h2>To do list</h2>
             </div>
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-md-5">
-                <input type="text" v-model="userInput">
-                <button @click="addTask()">Add Task</button>
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="bi bi-list-task"></i></span>  
+                    <input class="form-control" type="text" v-model="userInput">
+                    <button class="btn btn-outline-secondary" type="button" @click="addTask()">Add Task</button>
+                </div>
+            </div>
+            
+        </div>
+
+
+        <div class="row d-flex justify-content-center">
+            <div class="row overflow-auto justify-content-center" style="height: 650px">
+                <div v-for="title in tasksArray" class="row justify-content-center">
+                    <!-- send out to 'taskDiv' string called taskTitle -->
+                    <!-- @deleteTask, listens for event from child, then function called by parent -->
+                    <tasksDiv :taskTitle="title" @deleteTask="handleDeletion"></tasksDiv>
+                </div>
             </div>
         </div>
-
-        <div v-for="title in tasksArray" class="row">
-
-            <tasksDiv :taskTitle="title"></tasksDiv>
-
-        </div>
+            
     </div>
 
 </template>
