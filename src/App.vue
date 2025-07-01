@@ -4,16 +4,20 @@ import tasksDiv from './components/TasksCreation.vue'
 
 import { ref } from 'vue';
 
-const tasksArray = ref<string[]>([]);
+let idTrack = 0;
+
+const tasksArray = ref<{id: number, title: string}[]>([]);
 const userInput = ref('');
 
 function addTask() {
-    tasksArray.value.push(userInput.value);
+    tasksArray.value.push({id: idTrack++, title: userInput.value});
     userInput.value = "";
+    console.log(tasksArray.value);
 }
 
-function handleDeletion(taskTitle: string) {
-    tasksArray.value = tasksArray.value.filter(task => task !== taskTitle);
+// Filters through the array using the given string to filter those out
+function handleDeletion(taskID: number) {
+    tasksArray.value = tasksArray.value.filter(task => task.id !== taskID);
 }
 
 </script>
@@ -40,10 +44,10 @@ function handleDeletion(taskTitle: string) {
 
         <div class="row d-flex justify-content-center">
             <div class="row overflow-auto justify-content-center" style="height: 650px">
-                <div v-for="title in tasksArray" class="row justify-content-center">
+                <div v-for="task in tasksArray" :key="task.id" class="row justify-content-center">
                     <!-- send out to 'taskDiv' string called taskTitle -->
                     <!-- @deleteTask, listens for event from child, then function called by parent -->
-                    <tasksDiv :taskTitle="title" @deleteTask="handleDeletion"></tasksDiv>
+                    <tasksDiv :taskID="task.id" :taskTitle="task.title" @deleteTask="handleDeletion"></tasksDiv>
                 </div>
             </div>
         </div>
