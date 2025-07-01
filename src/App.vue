@@ -1,16 +1,21 @@
 <script setup lang="ts">
 
-import tasksDiv from './components/TasksCreation.vue'
-
+import tasksDiv from './components/TaskCards.vue'
 import { ref } from 'vue';
+import type { Itasks } from './tasks';
 
 let idTrack = 0;
 
-const tasksArray = ref<{id: number, title: string}[]>([]);
+const tasksArray = ref<Itasks[]>([]);
+// add boolean done
 const userInput = ref('');
 
 function addTask() {
-    tasksArray.value.push({id: idTrack++, title: userInput.value});
+    tasksArray.value.push({
+        id: idTrack++,
+        title: userInput.value,
+        checked: false
+    })
     userInput.value = "";
     console.log(tasksArray.value);
 }
@@ -38,13 +43,11 @@ function handleDeletion(taskID: number) {
                     <button class="btn btn-outline-secondary" type="button" @click="addTask()">Add Task</button>
                 </div>
             </div>
-            
         </div>
-
 
         <div class="row d-flex justify-content-center">
             <div class="row overflow-auto justify-content-center" style="height: 650px">
-                <div v-for="task in tasksArray" :key="task.id" class="row justify-content-center">
+                <div v-for="task in tasksArray" :key="task.id">
                     <!-- send out to 'taskDiv' string called taskTitle -->
                     <!-- @deleteTask, listens for event from child, then function called by parent -->
                     <tasksDiv :taskID="task.id" :taskTitle="task.title" @deleteTask="handleDeletion"></tasksDiv>
