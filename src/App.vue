@@ -13,8 +13,7 @@ const userInput = ref('');
 function addTask() {
     tasksArray.value.push({
         id: idTrack++,
-        title: userInput.value,
-        checked: false
+        title: userInput.value
     })
     userInput.value = "";
     console.log(tasksArray.value);
@@ -30,7 +29,7 @@ function handleDeletion(taskID: number) {
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col text-md-center mt-md-5 mb-3">
+            <div class="col text-md-center mt-md-2 mb-3">
                 <h2>To do list</h2>
             </div>
         </div>
@@ -46,11 +45,13 @@ function handleDeletion(taskID: number) {
         </div>
 
         <div class="row d-flex justify-content-center">
-            <div class="row overflow-auto justify-content-center" style="height: 650px">
-                <div v-for="task in tasksArray" :key="task.id">
-                    <!-- send out to 'taskDiv' string called taskTitle -->
-                    <!-- @deleteTask, listens for event from child, then function called by parent -->
-                    <tasksDiv :taskID="task.id" :taskTitle="task.title" @deleteTask="handleDeletion"></tasksDiv>
+            <div class="col-md-10 overflow-auto">
+                <div class="d-flex flex-column align-items-center gap-3" style="height: 550px">
+                    <div v-for="task in tasksArray" :key="task.id" class="w-100">
+                        <!-- send out to 'taskDiv' string called taskTitle -->
+                        <!-- @deleteTask, listens for event from child, then function called by parent -->
+                        <tasksDiv :taskID="task.id" :taskTitle="task.title" @deleteTask="handleDeletion"></tasksDiv>
+                    </div>
                 </div>
             </div>
         </div>

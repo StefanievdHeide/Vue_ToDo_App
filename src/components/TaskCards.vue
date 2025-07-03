@@ -2,7 +2,7 @@
 
 import { ref } from 'vue'
 
-const checkedTasks = ref<string[]>([]);
+const checkedTasks = ref(false)
 
 // Props = input → child
 // Emits = output → parent
@@ -13,7 +13,6 @@ const checkedTasks = ref<string[]>([]);
 const props = defineProps<{
     taskTitle?: string;
     taskID: number;
-    checked?: boolean;
 }>();
 
 // Emit an event to the parent, in this case for deletion, and send a string with it, in this case the title
@@ -32,13 +31,21 @@ function deleteSelectedTask() {
 
 <template>
 
-    <div class="tasksDiv col-md-4">
+    <div class="tasksDiv">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ taskTitle }}</h5>
-                <h6 class="card-subtitle mt-2 text-muted">Description</h6>
-                <input class="form-check-input" type="checkbox" :value="props.taskID" v-model="checkedTasks">
-                <button class="btn btn-outline-danger" @click="deleteSelectedTask"><i class="bi bi-x"></i></button>
+                <div class="d-flex align-items-center justify-content-between gap-2">
+                    <div class="d-flex align-items-center gap-2 flex-grow-1">
+                        <input class="form-check-input" type="checkbox" :value="props.taskID" v-model="checkedTasks">
+                        <h5 class="card-title mb-0" :class="{ 'text-decoration-line-through': checkedTasks }">
+                            {{ taskTitle }}
+                        </h5>
+                    </div>
+
+                <button class="btn btn-outline-danger btn-sm" @click="deleteSelectedTask">
+                    <i class="bi bi-x"></i>
+                </button>
+                </div>
             </div>
         </div>
     </div>
